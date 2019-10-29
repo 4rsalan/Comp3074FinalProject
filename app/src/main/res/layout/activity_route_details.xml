@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/txtDistanceWalked"
-        android:layout_width="344dp"
+        android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_marginStart="34dp"
         android:layout_marginLeft="34dp"
@@ -34,13 +34,14 @@
 
     <EditText
         android:id="@+id/etxtRouteName"
-        android:layout_width="349dp"
+        android:layout_width="0dp"
         android:layout_height="43dp"
         android:layout_marginStart="34dp"
         android:layout_marginLeft="34dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginRight="28dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginRight="56dp"
+        android:editable="false"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="(Route Name)"
@@ -49,20 +50,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtRDTitle" />
 
-    <TextView
-        android:id="@+id/txtDetailsPlaceHolder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="113dp"
-        android:layout_marginLeft="113dp"
-        android:layout_marginEnd="134dp"
-        android:layout_marginRight="134dp"
-        android:layout_marginBottom="8dp"
-        android:text="(More Route Details Here)"
-        app:layout_constraintBottom_toTopOf="@+id/imgMapPlaceHolder"
+    <EditText
+        android:id="@+id/etxtTags"
+        android:layout_width="0dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="34dp"
+        android:layout_marginLeft="34dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginRight="56dp"
+        android:editable="false"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="#Tags"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
     <ImageView
         android:id="@+id/imgMapPlaceHolder"
@@ -81,16 +85,68 @@
 
     <TextView
         android:id="@+id/txtDateCreated"
-        android:layout_width="347dp"
+        android:layout_width="0dp"
         android:layout_height="29dp"
         android:layout_marginStart="34dp"
         android:layout_marginLeft="34dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginRight="33dp"
         android:text="Date Created: "
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etxtRouteName" />
+
+    <ImageButton
+        android:id="@+id/btnEdit"
+        android:layout_width="43dp"
+        android:layout_height="43dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/etxtRouteName"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtDistanceWalked" />
+
+    <ImageButton
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/imgMapPlaceHolder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imgMapPlaceHolder"
+        app:srcCompat="@android:drawable/ic_menu_delete" />
+
+    <Button
+        android:id="@+id/btnExpend"
+        android:layout_width="57dp"
+        android:layout_height="53dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Expand"
+        app:layout_constraintBottom_toTopOf="@+id/btnDelete"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnShare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtDistanceWalked"
+        app:srcCompat="@android:drawable/ic_dialog_email" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

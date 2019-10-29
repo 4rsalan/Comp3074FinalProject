@@ -9,9 +9,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RouteDetailsActivity"></activity>
-        <activity android:name=".ManageRoutesActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".RecordRouteActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".ShareRouteActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".FullScreenMapActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".AboutActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".RouteDetailsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ManageRoutesActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
