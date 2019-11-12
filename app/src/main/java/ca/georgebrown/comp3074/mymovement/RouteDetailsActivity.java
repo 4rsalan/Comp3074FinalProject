@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class RouteDetailsActivity extends AppCompatActivity {
@@ -19,8 +20,11 @@ public class RouteDetailsActivity extends AppCompatActivity {
 
         //set Extras to Variables
         int id = getIntent().getExtras().getInt("RouteId");
+        String name = getIntent().getExtras().getString("RouteName");
         String date = getIntent().getExtras().getString("RouteDate");
         Double distance = getIntent().getExtras().getDouble("RouteDistance");
+        Double rating = getIntent().getExtras().getDouble("RouteRating");
+        String tags = getIntent().getExtras().getString("RouteTags");
 
         //set Variables to UI objects
         ImageButton btnEdit = findViewById(R.id.btnEdit);
@@ -32,13 +36,17 @@ public class RouteDetailsActivity extends AppCompatActivity {
         final EditText etxtTags = findViewById(R.id.etxtTags);
         TextView txtDateCreated = findViewById(R.id.txtDateCreated);
         TextView txtDistanceWalked = findViewById(R.id.txtDistanceWalked);
+        RatingBar ratingBar = findViewById(R.id.ratingBar);
 
 
         //set Text to UI objects
         txtRDTitle.setText("Details Of Route " + id);
-        etxtRouteName.setText("Route " + id);
+        etxtRouteName.setText(name);
         txtDateCreated.setText("Date Created: " + date);
         txtDistanceWalked.setText("Distance Walked: " + distance);
+        ratingBar.setRating(rating.floatValue());
+        etxtTags.setText(tags);
+
 
         etxtRouteName.setEnabled(false);
         etxtTags.setEnabled(false);

@@ -12,10 +12,15 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static DbHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Create Database Helper Instance
+        dbHelper = new DbHelper(this);
 
         //Point Variables to UI objects
         Button btnManageRoutes = findViewById(R.id.btnManageRoutes);
@@ -48,5 +53,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy(){
+        dbHelper.close();
+        super.onDestroy();
     }
 }
