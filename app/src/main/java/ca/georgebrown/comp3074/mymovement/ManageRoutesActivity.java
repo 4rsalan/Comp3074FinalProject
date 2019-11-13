@@ -1,5 +1,6 @@
 package ca.georgebrown.comp3074.mymovement;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -19,6 +20,7 @@ public class ManageRoutesActivity extends AppCompatActivity {
 
     //set Static/public/final variable
     public static List<RouteClass> list = new ArrayList<RouteClass>();
+    static ListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,7 @@ public class ManageRoutesActivity extends AppCompatActivity {
         ListView listRoutes = findViewById(R.id.listRoutes);
 
         //set the List adapater
-        ListAdapter adapter = new ListAdapter(this, R.layout.route_item_layout, list);
+        adapter = new ListAdapter(this, R.layout.route_item_layout, list);
         listRoutes.setAdapter(adapter);
 
         //Set action events

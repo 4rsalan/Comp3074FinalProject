@@ -19,7 +19,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_route_details);
 
         //set Extras to Variables
-        int id = getIntent().getExtras().getInt("RouteId");
+        final int id = getIntent().getExtras().getInt("RouteId");
         String name = getIntent().getExtras().getString("RouteName");
         String date = getIntent().getExtras().getString("RouteDate");
         Double distance = getIntent().getExtras().getDouble("RouteDistance");
@@ -72,6 +72,14 @@ public class RouteDetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 etxtRouteName.setEnabled(true);
                 etxtTags.setEnabled(true);
+            }
+        });
+
+        btnDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.dbHelper.deleteItem(DbContract.RouteEntity.TABLE_NAME, id);
+                finish();
             }
         });
     }

@@ -31,7 +31,7 @@ public class ListAdapter extends ArrayAdapter<RouteClass> {
         TextView txtRouteItem = newView.findViewById(R.id.txtRouteItem);
 
         //Set the Item's Text
-        String msg = "Route " + getItem(Position).getId();
+        String msg = getItem(Position).name;
         txtRouteItem.setText(msg);
 
         //Return the view

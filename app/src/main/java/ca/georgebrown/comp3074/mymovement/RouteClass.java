@@ -11,8 +11,7 @@ public class RouteClass {
     public String tags;
     public List<MapDataClass> mapData;
 
-    public RouteClass(int i, String n, String da, Double di, Double r, String t){
-        id = i;
+    public RouteClass(String n, String da, Double di, Double r, String t){
         name = n;
         date = da;
         distance = di;

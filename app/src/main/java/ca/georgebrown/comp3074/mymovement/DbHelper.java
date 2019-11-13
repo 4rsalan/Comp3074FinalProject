@@ -47,15 +47,22 @@ public class DbHelper extends SQLiteOpenHelper {
         cv.put(DbContract.RouteEntity.COLUMN_TAG, route.tags);
 
         long result = db.insert(table, null, cv);
-        Log.d("ROUTES_DB", "Item with id " + result + "has been inserted into " + table + " table");
+        Log.d("ROUTES_DB", "Item with id " + result + " has been inserted into " + table + " table");
     }
 
     public int updateItem(String table, RouteClass route) {
         return 1; //replace
     }
 
-    public int deleteItem(String table, int id) {
-        return 1; //replace
+    public void deleteItem(String table, int id) {
+        SQLiteDatabase db = getWritableDatabase();
+        String whereClause = DbContract.RouteEntity._ID + "=" + id;
+
+        int result = db.delete(table, whereClause, null);
+        if ((result==0))
+            Log.d("ROUTES_DB", "Route with id " + id + " could not be deleted");
+        else
+            Log.d("ROUTES_DB", "Route with id " + id + " was deleted");
     }
 
     public List<RouteClass> getAllRoutes() {
@@ -96,7 +103,8 @@ public class DbHelper extends SQLiteOpenHelper {
             Double rating = data.getDouble(data.getColumnIndexOrThrow(DbContract.RouteEntity.COLUMN_RATING));
             String tags = data.getString(data.getColumnIndexOrThrow(DbContract.RouteEntity.COLUMN_TAG));
 
-            route = new RouteClass(id, name, date, distance, rating, tags);
+            route = new RouteClass(name, date, distance, rating, tags);
+            route.setId(id);
             tempList.add(route);
             count += 1;
         }
@@ -111,15 +119,15 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     public void createDummyData(){
-        RouteClass route = new RouteClass(1, "Route 1", "11/11/2019", 12.05, 4.0, "");
+        RouteClass route = new RouteClass("Route 1", "11/11/2019", 12.05, 4.0, "");
         addItem(DbContract.RouteEntity.TABLE_NAME, route);
-        route = new RouteClass(2, "Route 2", "11/02/2019", 3.45, 3.5, "Store");
+        route = new RouteClass("Route 2", "11/02/2019", 3.45, 3.5, "Store");
         addItem(DbContract.RouteEntity.TABLE_NAME, route);
-        route = new RouteClass(3, "Route 3", "10/15/2019", 6.94, 3.0, "");
+        route = new RouteClass("Route 3", "10/15/2019", 6.94, 3.0, "");
         addItem(DbContract.RouteEntity.TABLE_NAME, route);
-        route = new RouteClass(4, "Route 4", "9/14/2019", 4.02, 1.5, "Old");
+        route = new RouteClass("Route 4", "9/14/2019", 4.02, 1.5, "Old");
         addItem(DbContract.RouteEntity.TABLE_NAME, route);
-        route = new RouteClass(2, "Route 5", "8/29/2019", 8.29, 5.0, "Vacation/Amusement Park");
+        route = new RouteClass("Route 5", "8/29/2019", 8.29, 5.0, "Vacation/Amusement Park");
         addItem(DbContract.RouteEntity.TABLE_NAME, route);
     }
 }
