@@ -12,10 +12,12 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class RouteDetailsActivity extends AppCompatActivity {
+    Boolean editing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        editing = false;
         setContentView(R.layout.activity_route_details);
 
         //set Extras to Variables
@@ -37,6 +39,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
         TextView txtDateCreated = findViewById(R.id.txtDateCreated);
         TextView txtDistanceWalked = findViewById(R.id.txtDistanceWalked);
         RatingBar ratingBar = findViewById(R.id.ratingBar);
+        final Button saveBtn = findViewById(R.id.saveBtn);
 
 
         //set Text to UI objects
@@ -50,6 +53,8 @@ public class RouteDetailsActivity extends AppCompatActivity {
 
         etxtRouteName.setEnabled(false);
         etxtTags.setEnabled(false);
+        saveBtn.setVisibility(saveBtn.GONE);
+
 
         //Set Action Events
         btnExpand.setOnClickListener(new View.OnClickListener() {
@@ -70,8 +75,15 @@ public class RouteDetailsActivity extends AppCompatActivity {
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editing = !editing;
                 etxtRouteName.setEnabled(true);
                 etxtTags.setEnabled(true);
+                if(editing){
+                    saveBtn.setVisibility(saveBtn.VISIBLE);
+                }
+                else{
+                    saveBtn.setVisibility(saveBtn.GONE);
+                }
             }
         });
 
@@ -79,6 +91,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 MainActivity.dbHelper.deleteItem(DbContract.RouteEntity.TABLE_NAME, id);
+                setResult(RESULT_OK, getIntent());
                 finish();
             }
         });

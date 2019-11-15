@@ -48,8 +48,17 @@ public class ManageRoutesActivity extends AppCompatActivity {
                 intent.putExtra("RouteName", route.getName());
                 intent.putExtra("RouteRating", route.getRating());
                 intent.putExtra("RouteTags", route.getTags());
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(getIntent());
+            overridePendingTransition(0, 0);
     }
 }
