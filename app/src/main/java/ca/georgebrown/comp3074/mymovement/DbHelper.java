@@ -50,8 +50,21 @@ public class DbHelper extends SQLiteOpenHelper {
         Log.d("ROUTES_DB", "Item with id " + result + " has been inserted into " + table + " table");
     }
 
-    public int updateItem(String table, RouteClass route) {
-        return 1; //replace
+    public int updateItem(String table, String name, String tags, Float rating, int id) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        String whereClause = DbContract.RouteEntity._ID + "=" + id;
+
+        cv.put(DbContract.RouteEntity.COLUMN_ROUTE, name);
+        cv.put(DbContract.RouteEntity.COLUMN_RATING, rating);
+        cv.put(DbContract.RouteEntity.COLUMN_TAG, tags);
+
+        int result = db.update(table, cv, whereClause,null);
+        if ((result==0))
+            Log.d("ROUTES_DB", "Route with id " + id + " could not be edited");
+        else
+            Log.d("ROUTES_DB", "Route with id " + id + " was edited");
+        return result;
     }
 
     public void deleteItem(String table, int id) {
