@@ -76,14 +76,26 @@ public class RouteDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 editing = !editing;
-                etxtRouteName.setEnabled(true);
-                etxtTags.setEnabled(true);
                 if(editing){
                     saveBtn.setVisibility(saveBtn.VISIBLE);
+                    etxtRouteName.setEnabled(true);
+                    etxtTags.setEnabled(true);
                 }
                 else{
                     saveBtn.setVisibility(saveBtn.GONE);
+                    etxtRouteName.setEnabled(false);
+                    etxtTags.setEnabled(false);
                 }
+            }
+        });
+
+        saveBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                editing = false;
+                saveBtn.setVisibility(saveBtn.GONE);
+                etxtRouteName.setEnabled(false);
+                etxtTags.setEnabled(false);
             }
         });
 
