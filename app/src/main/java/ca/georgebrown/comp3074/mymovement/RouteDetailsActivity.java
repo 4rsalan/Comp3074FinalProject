@@ -22,11 +22,11 @@ public class RouteDetailsActivity extends AppCompatActivity {
 
         //set Extras to Variables
         final int id = getIntent().getExtras().getInt("RouteId");
-        String name = getIntent().getExtras().getString("RouteName");
+        final String name = getIntent().getExtras().getString("RouteName");
         String date = getIntent().getExtras().getString("RouteDate");
         Double distance = getIntent().getExtras().getDouble("RouteDistance");
-        Double rating = getIntent().getExtras().getDouble("RouteRating");
-        String tags = getIntent().getExtras().getString("RouteTags");
+        final Double rating = getIntent().getExtras().getDouble("RouteRating");
+        final String tags = getIntent().getExtras().getString("RouteTags");
 
         //set Variables to UI objects
         ImageButton btnEdit = findViewById(R.id.btnEdit);
@@ -38,7 +38,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
         final EditText etxtTags = findViewById(R.id.etxtTags);
         TextView txtDateCreated = findViewById(R.id.txtDateCreated);
         TextView txtDistanceWalked = findViewById(R.id.txtDistanceWalked);
-        RatingBar ratingBar = findViewById(R.id.ratingBar);
+        final RatingBar ratingBar = findViewById(R.id.ratingBar);
         final Button saveBtn = findViewById(R.id.saveBtn);
 
 
@@ -53,6 +53,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
 
         etxtRouteName.setEnabled(false);
         etxtTags.setEnabled(false);
+        ratingBar.setEnabled(false);
         saveBtn.setVisibility(saveBtn.GONE);
 
 
@@ -80,11 +81,14 @@ public class RouteDetailsActivity extends AppCompatActivity {
                     saveBtn.setVisibility(saveBtn.VISIBLE);
                     etxtRouteName.setEnabled(true);
                     etxtTags.setEnabled(true);
+                    ratingBar.setEnabled(true);
                 }
                 else{
+                    MainActivity.dbHelper.updateItem(DbContract.RouteEntity.TABLE_NAME, etxtRouteName.getText().toString(), etxtTags.getText().toString(), ratingBar.getRating(), id);
                     saveBtn.setVisibility(saveBtn.GONE);
                     etxtRouteName.setEnabled(false);
                     etxtTags.setEnabled(false);
+                    ratingBar.setEnabled(false);
                 }
             }
         });
@@ -92,10 +96,12 @@ public class RouteDetailsActivity extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                MainActivity.dbHelper.updateItem(DbContract.RouteEntity.TABLE_NAME, etxtRouteName.getText().toString(), etxtTags.getText().toString(), ratingBar.getRating(), id);
                 editing = false;
                 saveBtn.setVisibility(saveBtn.GONE);
                 etxtRouteName.setEnabled(false);
                 etxtTags.setEnabled(false);
+                ratingBar.setEnabled(false);
             }
         });
 
