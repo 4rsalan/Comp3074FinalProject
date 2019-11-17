@@ -9,4 +9,11 @@
         android:layout_height="51dp"
         android:text="(Route Name)"
         android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/txtTags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tags:"
+        android:textSize="18sp" />
 </LinearLayout>
