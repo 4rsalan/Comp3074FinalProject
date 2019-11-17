@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DbHelper extends SQLiteOpenHelper {
@@ -78,7 +79,7 @@ public class DbHelper extends SQLiteOpenHelper {
             Log.d("ROUTES_DB", "Route with id " + id + " was deleted");
     }
 
-    public List<RouteClass> getAllRoutes() {
+    public void getAllRoutes() {
         SQLiteDatabase db = getReadableDatabase();
 
         //define query arguments (most are null)
@@ -106,7 +107,6 @@ public class DbHelper extends SQLiteOpenHelper {
         RouteClass route;
         int count = 0;
         ManageRoutesActivity.list.clear();
-        List<RouteClass> tempList = new ArrayList<RouteClass>();
 
         while (data.moveToNext()){
             int id = data.getInt(data.getColumnIndexOrThrow(DbContract.RouteEntity._ID));
@@ -118,13 +118,67 @@ public class DbHelper extends SQLiteOpenHelper {
 
             route = new RouteClass(name, date, distance, rating, tags);
             route.setId(id);
-            tempList.add(route);
+            ManageRoutesActivity.list.add(route);
             count += 1;
         }
 
         //log the number of items in database
         Log.d("ROUTES_DB", "There are " + count + " items in the Database");
-        return tempList;
+    }
+
+    public void getAllFilteredRoutes(String tagString){
+        SQLiteDatabase db = getReadableDatabase();
+
+        //define query arguments (most are null)
+        String[] columns = {
+                DbContract.RouteEntity._ID,
+                DbContract.RouteEntity.COLUMN_ROUTE,
+                DbContract.RouteEntity.COLUMN_DATE,
+                DbContract.RouteEntity.COLUMN_DISTANCE,
+                DbContract.RouteEntity.COLUMN_RATING,
+                DbContract.RouteEntity.COLUMN_TAG
+        };
+        String selection = null;
+        String[] selectionArgs = null;
+        String groupBy = null;
+        String having = null;
+        String orderBy = null;
+
+        Cursor data = db.query(DbContract.RouteEntity.TABLE_NAME, columns, selection, selectionArgs, groupBy, having, orderBy);
+
+        RouteClass route;
+        int count = 0;
+        ManageRoutesActivity.list.clear();
+
+        while (data.moveToNext()){
+            int id = data.getInt(data.getColumnIndexOrThrow(DbContract.RouteEntity._ID));
+            String name = data.getString(data.getColumnIndexOrThrow(DbContract.RouteEntity.COLUMN_ROUTE));
+            String date = data.getString(data.getColumnIndexOrThrow(DbContract.RouteEntity.COLUMN_DATE));
+            Double distance = data.getDouble(data.getColumnIndexOrThrow(DbContract.RouteEntity.COLUMN_DISTANCE));
+            Double rating = data.getDouble(data.getColumnIndexOrThrow(DbContract.RouteEntity.COLUMN_RATING));
+            String tags = data.getString(data.getColumnIndexOrThrow(DbContract.RouteEntity.COLUMN_TAG));
+
+            String[] searchTags =  TagStringSeparator(tagString);
+            String[] routeTags = TagStringSeparator(tags);
+
+            //only add to list if tag is found
+            for (int i = 0; i < searchTags.length; i++) {
+                if (Arrays.asList(routeTags).contains(searchTags[i])) {
+                    route = new RouteClass(name, date, distance, rating, tags);
+                    route.setId(id);
+                    ManageRoutesActivity.list.add(route);
+                    count += 1;
+                }
+            }
+        }
+
+        Log.d("ROUTES_DB", count + " results match the search tags");
+    }
+
+    private static String[] TagStringSeparator(String tags){
+        String tagsNoWhiteSpace = tags.replaceAll(" ", "");
+        String[] tagArray = tagsNoWhiteSpace.split(",");
+        return tagArray;
     }
 
     public List getAllMapData() {

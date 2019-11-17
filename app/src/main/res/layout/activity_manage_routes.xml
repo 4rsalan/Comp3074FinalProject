@@ -8,12 +8,10 @@
 
     <ListView
         android:id="@+id/listRoutes"
-        android:layout_width="408dp"
-        android:layout_height="503dp"
-        android:layout_marginTop="69dp"
-        android:layout_marginBottom="52dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="410dp"
+        android:layout_height="548dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etxtSearchRoute" />
 
@@ -30,12 +28,30 @@
 
     <EditText
         android:id="@+id/etxtSearchRoute"
-        android:layout_width="410dp"
-        android:layout_height="56dp"
+        android:layout_width="300dp"
+        android:layout_height="63dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginEnd="108dp"
+        android:layout_marginRight="108dp"
         android:ems="10"
+        android:hint="ex. tag1, tag2, tag3..."
         android:inputType="textPersonName"
-        android:text="(Search Bar Goes Here)"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtMRTitle" />
+
+    <Button
+        android:id="@+id/btnSearch"
+        android:layout_width="103dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginTop="1dp"
+        android:text="@android:string/search_go"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/etxtSearchRoute"
         app:layout_constraintTop_toBottomOf="@+id/txtMRTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,10 +29,13 @@ public class ListAdapter extends ArrayAdapter<RouteClass> {
 
         //Point Variables to UI objects
         TextView txtRouteItem = newView.findViewById(R.id.txtRouteItem);
+        TextView txtTags = newView.findViewById(R.id.txtTags);
 
         //Set the Item's Text
         String msg = getItem(Position).name;
         txtRouteItem.setText(msg);
+        msg = getItem(Position).tags;
+        txtTags.setText("Tags: " + msg);
 
         //Return the view
         return newView;
