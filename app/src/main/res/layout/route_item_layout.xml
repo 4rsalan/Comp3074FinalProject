@@ -6,7 +6,7 @@
     <TextView
         android:id="@+id/txtRouteItem"
         android:layout_width="match_parent"
-        android:layout_height="51dp"
+        android:layout_height="wrap_content"
         android:text="(Route Name)"
         android:textSize="30sp" />
 
