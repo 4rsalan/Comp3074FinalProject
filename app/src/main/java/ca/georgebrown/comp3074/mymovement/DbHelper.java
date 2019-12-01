@@ -37,18 +37,33 @@ public class DbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addItem(String table, RouteClass route) {
+    public void addItem(String table, RouteClass route, List<RoutePointClass> points) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(DbContract.RouteEntity.COLUMN_ROUTE, route.name);
-        cv.put(DbContract.RouteEntity.COLUMN_DATE, route.date);
-        cv.put(DbContract.RouteEntity.COLUMN_DISTANCE, route.distance);
-        cv.put(DbContract.RouteEntity.COLUMN_RATING, route.rating);
-        cv.put(DbContract.RouteEntity.COLUMN_TAG, route.tags);
+        if (table == DbContract.RouteEntity.TABLE_NAME) {
+            cv.put(DbContract.RouteEntity.COLUMN_ROUTE, route.name);
+            cv.put(DbContract.RouteEntity.COLUMN_DATE, route.date);
+            cv.put(DbContract.RouteEntity.COLUMN_DISTANCE, route.distance);
+            cv.put(DbContract.RouteEntity.COLUMN_RATING, route.rating);
+            cv.put(DbContract.RouteEntity.COLUMN_TAG, route.tags);
+        }
 
         long result = db.insert(table, null, cv);
+        int index = 0;
+
         Log.d("ROUTES_DB", "Item with id " + result + " has been inserted into " + table + " table");
+
+        while (index < points.size()){
+            cv = new ContentValues();
+            cv.put(DbContract.MapDataEntity.COLUMN_ROUTE_ID, result);
+            cv.put(DbContract.MapDataEntity.COLUMN_LATITUDE, points.get(index).latitude);
+            cv.put(DbContract.MapDataEntity.COLUMN_LONGITUDE, points.get(index).longitude);
+            cv.put(DbContract.MapDataEntity.COLUMN_TIMESTAMP, points.get(index).longitude);
+            long pointResult = db.insert(DbContract.MapDataEntity.TABLE_NAME, null, cv);
+            Log.d("ROUTES_DB", "Route Point with id: " + pointResult + " has been inserted into " + DbContract.MapDataEntity.TABLE_NAME + " table");
+            index++;
+        }
     }
 
     public int updateItem(String table, String name, String tags, Float rating, int id) {
@@ -71,12 +86,20 @@ public class DbHelper extends SQLiteOpenHelper {
     public void deleteItem(String table, int id) {
         SQLiteDatabase db = getWritableDatabase();
         String whereClause = DbContract.RouteEntity._ID + "=" + id;
+        String pointWhereClause = DbContract.MapDataEntity.COLUMN_ROUTE_ID + "=" + id;
 
         int result = db.delete(table, whereClause, null);
         if ((result==0))
             Log.d("ROUTES_DB", "Route with id " + id + " could not be deleted");
         else
             Log.d("ROUTES_DB", "Route with id " + id + " was deleted");
+
+        result = db.delete(DbContract.MapDataEntity.TABLE_NAME, pointWhereClause, null);
+        if((result==0))
+            Log.d("ROUTES_DB", "Map Data could not be deleted");
+        else
+            Log.d("ROUTES_DB", "All map data associated with Route Id " + id + " has been deleted");
+
     }
 
     public void getAllRoutes() {
@@ -187,14 +210,15 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public void createDummyData(){
         RouteClass route = new RouteClass("Route 1", "11/11/2019", 12.05, 4.0, "");
-        addItem(DbContract.RouteEntity.TABLE_NAME, route);
+        List<RoutePointClass> points = new ArrayList<RoutePointClass>();
+        addItem(DbContract.RouteEntity.TABLE_NAME, route, points);
         route = new RouteClass("Route 2", "11/02/2019", 3.45, 3.5, "Store");
-        addItem(DbContract.RouteEntity.TABLE_NAME, route);
+        addItem(DbContract.RouteEntity.TABLE_NAME, route, points);
         route = new RouteClass("Route 3", "10/15/2019", 6.94, 3.0, "");
-        addItem(DbContract.RouteEntity.TABLE_NAME, route);
+        addItem(DbContract.RouteEntity.TABLE_NAME, route, points);
         route = new RouteClass("Route 4", "9/14/2019", 4.02, 1.5, "Old");
-        addItem(DbContract.RouteEntity.TABLE_NAME, route);
+        addItem(DbContract.RouteEntity.TABLE_NAME, route, points);
         route = new RouteClass("Route 5", "8/29/2019", 8.29, 5.0, "Vacation/Amusement Park");
-        addItem(DbContract.RouteEntity.TABLE_NAME, route);
+        addItem(DbContract.RouteEntity.TABLE_NAME, route, points);
     }
 }

@@ -6,6 +6,8 @@ public class RoutePointClass {
     public int id;
     public int route_id;
     public double latitude;
+    public double longitude;
+    public double timestamp;
 
     public int getId() {
         return id;
@@ -39,14 +41,6 @@ public class RoutePointClass {
         this.longitude = longitude;
     }
 
-    public double getAltitude() {
-        return altitude;
-    }
-
-    public void setAltitude(double altitude) {
-        this.altitude = altitude;
-    }
-
     public double getTimestamp() {
         return timestamp;
     }
@@ -55,22 +49,17 @@ public class RoutePointClass {
         this.timestamp = timestamp;
     }
 
-    public double longitude;
-    public double altitude;
-    public double timestamp;
-
-    public RoutePointClass(int i, int ri, double la, double lo, double al, double t){
+    public RoutePointClass(int i, int ri, double la, double lo, double t){
         id = i;
         route_id = ri;
         latitude = la;
         longitude = lo;
-        altitude = al;
         timestamp = t;
     }
 
     @NonNull
     @Override
     public String toString() {
-        return "Id: " + id + ", Route Id: " + route_id + ", Latitude: " + latitude + ", Longitude" + longitude + ", Altitude: " + altitude + ", Timestamp: " + timestamp;
+        return "Id: " + id + ", Route Id: " + route_id + ", Latitude: " + latitude + ", Longitude: " + longitude + ", Timestamp: " + timestamp;
     }
 }
