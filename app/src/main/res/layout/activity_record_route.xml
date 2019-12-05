@@ -28,17 +28,18 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        android:text="Stop"
+        android:text="Start"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgMapPlaceHolder4" />
 
     <Button
         android:id="@+id/btnSaveRoute"
-        android:layout_width="85dp"
-        android:layout_height="61dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_width="116dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginRight="28dp"
+        android:enabled="true"
         android:text="Save Route"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textClock" />
@@ -61,10 +62,10 @@
         android:id="@+id/lblRecoring"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="17dp"
-        android:text="Recording Route"
+        android:layout_marginStart="56dp"
+        android:layout_marginLeft="56dp"
+        android:layout_marginTop="8dp"
+        android:text="Not Recording"
         app:layout_constraintStart_toEndOf="@+id/btnStopRoute"
         app:layout_constraintTop_toTopOf="@+id/btnStopRoute" />
 
@@ -107,5 +108,16 @@
         android:text="0km/h"
         app:layout_constraintStart_toStartOf="@+id/lblDistance"
         app:layout_constraintTop_toTopOf="@+id/textView5" />
+
+    <Button
+        android:id="@+id/btnRestartRoute"
+        android:layout_width="147dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginRight="28dp"
+        android:text="Restart Route"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSaveRoute" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

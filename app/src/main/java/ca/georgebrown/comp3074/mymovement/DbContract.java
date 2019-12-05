@@ -29,7 +29,6 @@ public final class DbContract {
         public static final String COLUMN_ROUTE_ID = "route_id";
         public static final String COLUMN_LATITUDE = "latitude";
         public static final String COLUMN_LONGITUDE = "longitude";
-        public static final String COLUMN_ALTITIUDE = "altitude";
         public static final String COLUMN_TIMESTAMP = "timestamp";
 
         public static final String SQL_CREATE = "CREATE TABLE " + TABLE_NAME + " ( "
@@ -37,7 +36,6 @@ public final class DbContract {
                 + COLUMN_ROUTE_ID + " INTEGER NOT NULL, "
                 + COLUMN_LATITUDE + " DOUBLE, "
                 + COLUMN_LONGITUDE + " DOUBLE, "
-                + COLUMN_ALTITIUDE + " DOUBLE, "
                 + COLUMN_TIMESTAMP + " DOUBLE "
                 + ")";
 
