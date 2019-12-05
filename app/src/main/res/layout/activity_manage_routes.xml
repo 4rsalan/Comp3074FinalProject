@@ -8,8 +8,14 @@
 
     <ListView
         android:id="@+id/listRoutes"
-        android:layout_width="410dp"
-        android:layout_height="548dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,8 +23,13 @@
 
     <TextView
         android:id="@+id/txtMRTitle"
-        android:layout_width="413dp"
+        android:layout_width="0dp"
         android:layout_height="51dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:text="Manage Routes"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -28,10 +39,10 @@
 
     <EditText
         android:id="@+id/etxtSearchRoute"
-        android:layout_width="300dp"
+        android:layout_width="0dp"
         android:layout_height="63dp"
-        android:layout_marginStart="3dp"
-        android:layout_marginLeft="3dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginEnd="108dp"
         android:layout_marginRight="108dp"
         android:ems="10"
@@ -43,11 +54,13 @@
 
     <Button
         android:id="@+id/btnSearch"
-        android:layout_width="103dp"
+        android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:layout_marginStart="1dp"
         android:layout_marginLeft="1dp"
         android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
         android:text="@android:string/search_go"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"

@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@+id/txtRDTitle"
-        android:layout_width="406dp"
+        android:layout_width="0dp"
         android:layout_height="58dp"
         android:text="Details of Route"
         android:textSize="30sp"
