@@ -49,12 +49,12 @@ public class RoutePointClass {
         this.timestamp = timestamp;
     }
 
-    public RoutePointClass(int i, int ri, double la, double lo, double t){
-        id = i;
-        route_id = ri;
-        latitude = la;
-        longitude = lo;
-        timestamp = t;
+    public RoutePointClass(int id, int route_id, double latitude, double longitude, double timestamp){
+        this.id = id;
+        this.route_id = route_id;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.timestamp = timestamp;
     }
 
     @NonNull

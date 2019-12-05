@@ -122,10 +122,10 @@ public class DbHelper extends SQLiteOpenHelper {
 
         //get the data
         Cursor data = db.query(DbContract.RouteEntity.TABLE_NAME, columns, selection, selectionArgs, groupBy, having, orderBy);
-        if (data.getCount() == 0){
+       /* if (data.getCount() == 0){
             createDummyData();
             data = db.query(DbContract.RouteEntity.TABLE_NAME, columns, selection, selectionArgs, groupBy, having, orderBy);
-        }
+        }*/
 
         RouteClass route;
         int count = 0;
@@ -204,10 +204,37 @@ public class DbHelper extends SQLiteOpenHelper {
         return tagArray;
     }
 
-    public List getAllMapData() {
-        return null; //replace
-    }
+    public List<RoutePointClass> getAllMapData(int id) {
+        List<RoutePointClass> points = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
 
+        //define query arguments (most are null)
+        String[] columns = {
+                DbContract.MapDataEntity._ID,
+                DbContract.MapDataEntity.COLUMN_ROUTE_ID,
+                DbContract.MapDataEntity.COLUMN_LATITUDE,
+                DbContract.MapDataEntity.COLUMN_LONGITUDE,
+                DbContract.MapDataEntity.COLUMN_TIMESTAMP
+        };
+        String selection = DbContract.MapDataEntity.COLUMN_ROUTE_ID + "= ?";
+        String[] selectionArgs = {String.valueOf(id)};
+        String groupBy = null;
+        String having = null;
+        String orderBy = DbContract.MapDataEntity.COLUMN_TIMESTAMP;
+
+        Cursor data = db.query(DbContract.MapDataEntity.TABLE_NAME, columns, selection, selectionArgs, groupBy, having, orderBy);
+
+        while (data.moveToNext()){
+            int point_id = data.getInt(data.getColumnIndexOrThrow(DbContract.MapDataEntity._ID));
+            int route_id = data.getInt(data.getColumnIndexOrThrow(DbContract.MapDataEntity.COLUMN_ROUTE_ID));
+            Double lat = data.getDouble(data.getColumnIndexOrThrow(DbContract.MapDataEntity.COLUMN_LATITUDE));
+            Double lng = data.getDouble(data.getColumnIndexOrThrow(DbContract.MapDataEntity.COLUMN_LONGITUDE));
+            Double ts = data.getDouble(data.getColumnIndexOrThrow(DbContract.MapDataEntity.COLUMN_TIMESTAMP));
+            points.add(new RoutePointClass(point_id,route_id,lat,lng,ts));
+        }
+        return points;
+    }
+/*
     public void createDummyData(){
         RouteClass route = new RouteClass("Route 1", "11/11/2019", 12.05, 4.0, "");
         List<RoutePointClass> points = new ArrayList<RoutePointClass>();
@@ -221,4 +248,6 @@ public class DbHelper extends SQLiteOpenHelper {
         route = new RouteClass("Route 5", "8/29/2019", 8.29, 5.0, "Vacation/Amusement Park");
         addItem(DbContract.RouteEntity.TABLE_NAME, route, points);
     }
+
+ */
 }

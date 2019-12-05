@@ -45,7 +45,7 @@ public class RecordRouteActivity extends FragmentActivity implements FetchAddres
     Boolean recording;
     double distance;
     double speed;
-    final int MAP_UPDATE_INTERVAL = 20000; // 20 seconds
+    final int MAP_UPDATE_INTERVAL = 3000; // 3 seconds
     private GoogleMap mMap;
 
     List<RoutePointClass> list = new ArrayList<RoutePointClass>();
@@ -69,7 +69,7 @@ public class RecordRouteActivity extends FragmentActivity implements FetchAddres
             public void onLocationResult(LocationResult locationResult) {
                 Location location = locationResult.getLastLocation();
                 if (location!= null) {
-                    RoutePointClass point = new RoutePointClass(0, 0, location.getLatitude(), location.getLongitude(), location.getTime());
+                    RoutePointClass point = new RoutePointClass(0, 0, location.getLatitude(), location.getLongitude(), (double)location.getTime());
                     Log.d("LOCATION", point.toString());
                     if (mMap!=null){
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(point.getLatitude(), point.getLongitude())));
@@ -85,7 +85,7 @@ public class RecordRouteActivity extends FragmentActivity implements FetchAddres
                         float delta_dist[] = new float[1];
                         Location.distanceBetween(previous.getLatitude(),previous.getLongitude(), point.getLatitude(), point.getLongitude(), delta_dist );
                         distance += delta_dist[0];
-                        speed = delta_dist[0] / (point.getTimestamp() - previous.getTimestamp() * 60 *60);
+                        speed = (delta_dist[0]) / ((point.getTimestamp() - previous.getTimestamp())/3600 );
                         txtDistance.setText(String.format("%f m", delta_dist[0]));
                         txtSpeed.setText(String.format("%f km/h", speed));
                     }

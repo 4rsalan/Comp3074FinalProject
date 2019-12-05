@@ -3,6 +3,7 @@ package ca.georgebrown.comp3074.mymovement;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,13 +12,25 @@ import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-public class RouteDetailsActivity extends AppCompatActivity {
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.List;
+
+public class RouteDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
     Boolean editing;
+    private GoogleMap mMap;
+    List<RoutePointClass> points;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         editing = false;
+
         setContentView(R.layout.activity_route_details);
 
         //set Extras to Variables
@@ -27,6 +40,9 @@ public class RouteDetailsActivity extends AppCompatActivity {
         Double distance = getIntent().getExtras().getDouble("RouteDistance");
         final Double rating = getIntent().getExtras().getDouble("RouteRating");
         final String tags = getIntent().getExtras().getString("RouteTags");
+
+        //get route points
+        points = MainActivity.dbHelper.getAllMapData(id);
 
         //set Variables to UI objects
         ImageButton btnEdit = findViewById(R.id.btnEdit);
@@ -113,5 +129,21 @@ public class RouteDetailsActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        RoutePointClass start_point = points.get(0);
+        LatLng start_cord = new LatLng(start_point.getLatitude(), start_point.getLongitude());
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(start_cord,20));
+        RoutePointClass previous = start_point;
+        for (int i = 1; i < points.size(); i++){
+            RoutePointClass current = points.get(i);
+            mMap.addPolyline(new PolylineOptions().add(new LatLng(previous.getLatitude(), previous.getLongitude()),
+            new LatLng(current.getLatitude(), current.getLongitude()))
+            .width(5).color(Color.RED));
+        }
+
     }
 }
