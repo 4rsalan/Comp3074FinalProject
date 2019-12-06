@@ -2,9 +2,12 @@ package ca.georgebrown.comp3074.mymovement;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.JsonWriter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +25,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.List;
 
 public class RouteDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -39,8 +50,8 @@ public class RouteDetailsActivity extends AppCompatActivity implements OnMapRead
         //set Extras to Variables
         final int id = getIntent().getExtras().getInt("RouteId");
         final String name = getIntent().getExtras().getString("RouteName");
-        String date = getIntent().getExtras().getString("RouteDate");
-        Double distance = getIntent().getExtras().getDouble("RouteDistance");
+        final String date = getIntent().getExtras().getString("RouteDate");
+        final Double distance = getIntent().getExtras().getDouble("RouteDistance");
         final Double rating = getIntent().getExtras().getDouble("RouteRating");
         final String tags = getIntent().getExtras().getString("RouteTags");
 
@@ -90,8 +101,47 @@ public class RouteDetailsActivity extends AppCompatActivity implements OnMapRead
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), ShareRouteActivity.class);
-                startActivity(i);
+
+                //Create Json to share
+                JSONObject jsonRoute = new JSONObject();
+                JSONArray jsonPoints = new JSONArray();
+                try {
+                    jsonRoute.put("name", name);
+                    jsonRoute.put("date", date);
+                    jsonRoute.put("distance", distance);
+                    jsonRoute.put("rating", rating);
+                    jsonRoute.put("tags",tags);
+                    points = MainActivity.dbHelper.getAllMapData(id);
+                    for (int i = 0; i < points.size(); i++){
+                        JSONObject jsonPoint = new JSONObject();
+                        jsonPoint.put("latitude", points.get(i).getLatitude());
+                        jsonPoint.put("longitude", points.get(i).getLongitude());
+                        jsonPoint.put("timestamp", points.get(i).getTimestamp());
+                        jsonPoints.put(jsonPoint);
+                    }
+
+                    //Write JSON to file
+                    File jsonFile = new File( RouteDetailsActivity.this.getApplicationContext().getDir("data", Context.MODE_PRIVATE) + "share.route");
+                    jsonFile.createNewFile(); // create file if doesn't exist
+                    jsonRoute.put("points", jsonPoints);
+                    OutputStreamWriter out = new OutputStreamWriter(openFileOutput("share.route", Context.MODE_PRIVATE));
+                    out.write(jsonRoute.toString());
+                    out.close();
+
+                    // Send Email
+                    Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Sharing Route " + name);
+                    emailIntent.putExtra(Intent.EXTRA_TEXT, "Here is a new route");
+                    emailIntent.putExtra(Intent.EXTRA_STREAM, "share.route");
+                    startActivity(Intent.createChooser(emailIntent , "Send Route"));
+                } catch (JSONException e) {
+                    //TODO Error handling
+                    e.printStackTrace();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
