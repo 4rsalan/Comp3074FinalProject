@@ -71,25 +71,26 @@ public class RecordRouteActivity extends FragmentActivity implements FetchAddres
                 if (location!= null) {
                     RoutePointClass point = new RoutePointClass(0, 0, location.getLatitude(), location.getLongitude(), (double)location.getTime());
                     Log.d("LOCATION", point.toString());
-                    if (mMap!=null){
+                    if (list.size() == 0){
+                        list.add(point);
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(point.getLatitude(), point.getLongitude())));
                     }
-                    list.add(point);
-                    if (list.size() > 1){
-                        RoutePointClass previous = list.get(list.size() -2);
-                        mMap.addPolyline(new PolylineOptions().add(new LatLng(previous.getLatitude(), previous.getLongitude()),
-                                new LatLng(point.getLatitude(), point.getLongitude()))
-                                .width(5).color(Color.RED));
-
-                        //calculate distance traveled in meters
+                    else {
+                        RoutePointClass previous = list.get(list.size() -1);
                         float delta_dist[] = new float[1];
                         Location.distanceBetween(previous.getLatitude(),previous.getLongitude(), point.getLatitude(), point.getLongitude(), delta_dist );
-                        distance += delta_dist[0];
-                        speed = (delta_dist[0]) / ((point.getTimestamp() - previous.getTimestamp())/3600 );
-                        txtDistance.setText(String.format("%f m", distance));
-                        txtSpeed.setText(String.format("%f km/h", speed));
+                        if(delta_dist[0] > location.getAccuracy()) {
+                            list.add(point);
+                            distance += delta_dist[0];
+                            speed = (delta_dist[0]) / ((point.getTimestamp() - previous.getTimestamp()) / 3600);
+                            txtDistance.setText(String.format("%f m", distance));
+                            txtSpeed.setText(String.format("%f km/h", speed));
+                            mMap.addPolyline(new PolylineOptions().add(new LatLng(previous.getLatitude(), previous.getLongitude()),
+                                    new LatLng(point.getLatitude(), point.getLongitude()))
+                                    .width(5).color(Color.RED));
+                            mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(point.getLatitude(), point.getLongitude())));
+                        }
                     }
-                    //uncomment when ready to find address
                     try {
                         String address = new FetchAddressClass(RecordRouteActivity.this, RecordRouteActivity.this).execute(location).get();
                         txtAddress.setText(address);

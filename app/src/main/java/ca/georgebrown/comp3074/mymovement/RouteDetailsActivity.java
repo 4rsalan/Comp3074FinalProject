@@ -83,6 +83,7 @@ public class RouteDetailsActivity extends AppCompatActivity implements OnMapRead
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), FullScreenMapActivity.class);
+                i.putExtra("RouteId", id);
                 startActivity(i);
             }
         });
