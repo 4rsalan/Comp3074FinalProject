@@ -86,7 +86,7 @@ public class RecordRouteActivity extends FragmentActivity implements FetchAddres
                         Location.distanceBetween(previous.getLatitude(),previous.getLongitude(), point.getLatitude(), point.getLongitude(), delta_dist );
                         distance += delta_dist[0];
                         speed = (delta_dist[0]) / ((point.getTimestamp() - previous.getTimestamp())/3600 );
-                        txtDistance.setText(String.format("%f m", delta_dist[0]));
+                        txtDistance.setText(String.format("%f m", distance));
                         txtSpeed.setText(String.format("%f km/h", speed));
                     }
                     //uncomment when ready to find address

@@ -5,17 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.List;
@@ -24,7 +28,6 @@ public class RouteDetailsActivity extends AppCompatActivity implements OnMapRead
     Boolean editing;
     private GoogleMap mMap;
     List<RoutePointClass> points;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +44,7 @@ public class RouteDetailsActivity extends AppCompatActivity implements OnMapRead
         final Double rating = getIntent().getExtras().getDouble("RouteRating");
         final String tags = getIntent().getExtras().getString("RouteTags");
 
-        //get route points
-        points = MainActivity.dbHelper.getAllMapData(id);
+
 
         //set Variables to UI objects
         ImageButton btnEdit = findViewById(R.id.btnEdit);
@@ -57,6 +59,9 @@ public class RouteDetailsActivity extends AppCompatActivity implements OnMapRead
         final RatingBar ratingBar = findViewById(R.id.ratingBar);
         final Button saveBtn = findViewById(R.id.saveBtn);
 
+        // MAPS !!! OMG!!
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         //set Text to UI objects
         txtRDTitle.setText("Details Of Route " + id);
@@ -134,16 +139,19 @@ public class RouteDetailsActivity extends AppCompatActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        int id = getIntent().getExtras().getInt("RouteId");
+        points = MainActivity.dbHelper.getAllMapData(id);
         RoutePointClass start_point = points.get(0);
         LatLng start_cord = new LatLng(start_point.getLatitude(), start_point.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(start_cord,20));
         RoutePointClass previous = start_point;
+        Toast.makeText(this, "Route start = " + start_point.getId(), Toast.LENGTH_LONG).show();
         for (int i = 1; i < points.size(); i++){
             RoutePointClass current = points.get(i);
             mMap.addPolyline(new PolylineOptions().add(new LatLng(previous.getLatitude(), previous.getLongitude()),
-            new LatLng(current.getLatitude(), current.getLongitude()))
-            .width(5).color(Color.RED));
-        }
-
+                    new LatLng(current.getLatitude(), current.getLongitude())).width(5).color(Color.RED));
+            Log.d("ROUTES_DB", "Route Point with id: " + current.getId() + " has been mapped");
+            previous = current;
+        } // */
     }
 }

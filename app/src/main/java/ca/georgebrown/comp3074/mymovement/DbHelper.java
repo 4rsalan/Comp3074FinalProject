@@ -230,6 +230,7 @@ public class DbHelper extends SQLiteOpenHelper {
             Double lat = data.getDouble(data.getColumnIndexOrThrow(DbContract.MapDataEntity.COLUMN_LATITUDE));
             Double lng = data.getDouble(data.getColumnIndexOrThrow(DbContract.MapDataEntity.COLUMN_LONGITUDE));
             Double ts = data.getDouble(data.getColumnIndexOrThrow(DbContract.MapDataEntity.COLUMN_TIMESTAMP));
+            Log.d("ROUTES_DB", "Route Point with id: " + point_id + " has been read from " + DbContract.MapDataEntity.TABLE_NAME + " table");
             points.add(new RoutePointClass(point_id,route_id,lat,lng,ts));
         }
         return points;
