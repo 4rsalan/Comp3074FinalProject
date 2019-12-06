@@ -1,11 +1,13 @@
 package ca.georgebrown.comp3074.mymovement;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.JsonWriter;
 import android.util.Log;
@@ -31,6 +33,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.List;
@@ -111,6 +114,7 @@ public class RouteDetailsActivity extends AppCompatActivity implements OnMapRead
                     jsonRoute.put("distance", distance);
                     jsonRoute.put("rating", rating);
                     jsonRoute.put("tags",tags);
+
                     points = MainActivity.dbHelper.getAllMapData(id);
                     for (int i = 0; i < points.size(); i++){
                         JSONObject jsonPoint = new JSONObject();
@@ -119,21 +123,36 @@ public class RouteDetailsActivity extends AppCompatActivity implements OnMapRead
                         jsonPoint.put("timestamp", points.get(i).getTimestamp());
                         jsonPoints.put(jsonPoint);
                     }
+                    //jsonRoute.put("points", jsonPoints);
 
                     //Write JSON to file
-                    File jsonFile = new File( RouteDetailsActivity.this.getApplicationContext().getDir("data", Context.MODE_PRIVATE) + "share.route");
-                    jsonFile.createNewFile(); // create file if doesn't exist
-                    jsonRoute.put("points", jsonPoints);
-                    OutputStreamWriter out = new OutputStreamWriter(openFileOutput("share.route", Context.MODE_PRIVATE));
+                    Context context = getApplication();
+                    File dir = context.getDir("data", Context.MODE_PRIVATE);
+                    //String path = "/data/share.route";
+                    File jsonFile = new File( dir, "share.route");
+                    //jsonFile.createNewFile(); // create file if doesn't exist
+                    //OutputStreamWriter out = new OutputStreamWriter(openFileOutput(path, Context.MODE_PRIVATE));
+                    FileWriter out = new FileWriter(jsonFile);
                     out.write(jsonRoute.toString());
                     out.close();
 
-                    // Send Email
+                        // Send Email
+                    /*
+                    Uri uri;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        uri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", jsonFile);
+                    } else {
+                        uri  = Uri.parse("file://" + jsonFile);
+                    }//*/
+
                     Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                    emailIntent.setType("message/rfc822");
+                    emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Sharing Route " + name);
                     emailIntent.putExtra(Intent.EXTRA_TEXT, "Here is a new route");
-                    emailIntent.putExtra(Intent.EXTRA_STREAM, "share.route");
-                    startActivity(Intent.createChooser(emailIntent , "Send Route"));
+                    emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(jsonFile.getAbsolutePath()));//"file://" + jsonFile.getAbsolutePath());
+                    startActivity(Intent.createChooser(emailIntent, "Send Route"));
+
                 } catch (JSONException e) {
                     //TODO Error handling
                     e.printStackTrace();
