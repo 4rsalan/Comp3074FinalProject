@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.JsonWriter;
 import android.util.Log;
 import android.view.View;
@@ -123,40 +124,33 @@ public class RouteDetailsActivity extends AppCompatActivity implements OnMapRead
                         jsonPoint.put("timestamp", points.get(i).getTimestamp());
                         jsonPoints.put(jsonPoint);
                     }
-                    //jsonRoute.put("points", jsonPoints);
+                    jsonRoute.put("points", jsonPoints);
 
                     //Write JSON to file
                     Context context = getApplication();
                     File dir = context.getDir("data", Context.MODE_PRIVATE);
-                    //String path = "/data/share.route";
-                    File jsonFile = new File( dir, "share.route");
-                    //jsonFile.createNewFile(); // create file if doesn't exist
-                    //OutputStreamWriter out = new OutputStreamWriter(openFileOutput(path, Context.MODE_PRIVATE));
+                    File jsonFile = new File( dir, "share_route.json");
                     FileWriter out = new FileWriter(jsonFile);
                     out.write(jsonRoute.toString());
                     out.close();
 
-                        // Send Email
-                    /*
-                    Uri uri;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        uri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", jsonFile);
-                    } else {
-                        uri  = Uri.parse("file://" + jsonFile);
-                    }//*/
-
+                    // Send Email
+                    //Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", jsonFile);
+                    Uri uri = Uri.parse(jsonFile.getAbsolutePath());
+                    Log.d("EMAIL", uri.toString());
                     Intent emailIntent = new Intent(Intent.ACTION_SEND);
                     emailIntent.setType("message/rfc822");
                     emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Sharing Route " + name);
                     emailIntent.putExtra(Intent.EXTRA_TEXT, "Here is a new route");
-                    emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(jsonFile.getAbsolutePath()));//"file://" + jsonFile.getAbsolutePath());
+                    emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
                     startActivity(Intent.createChooser(emailIntent, "Send Route"));
 
                 } catch (JSONException e) {
                     //TODO Error handling
                     e.printStackTrace();
                 } catch (FileNotFoundException e) {
+                    Toast.makeText(getApplication(),"Error File Couldn't be Found", Toast.LENGTH_LONG ).show();
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -215,7 +209,6 @@ public class RouteDetailsActivity extends AppCompatActivity implements OnMapRead
         LatLng start_cord = new LatLng(start_point.getLatitude(), start_point.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(start_cord,20));
         RoutePointClass previous = start_point;
-        Toast.makeText(this, "Route start = " + start_point.getId(), Toast.LENGTH_LONG).show();
         for (int i = 1; i < points.size(); i++){
             RoutePointClass current = points.get(i);
             mMap.addPolyline(new PolylineOptions().add(new LatLng(previous.getLatitude(), previous.getLongitude()),
