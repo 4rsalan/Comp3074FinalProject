@@ -2,4 +2,8 @@
     <string name="app_name">MyMovement</string>
     <string name="about_us">Joey Corp is a team of highly talented programming students deadicated to bringing our clients the very best programming assignments</string>
     <string name="team">Guiseppe Ragusa\n Arsalan Farooqui \n Andrew B. Cobb</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
